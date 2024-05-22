@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuscAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Bem vindo ao BuscAI</h1>
+        <form method="POST">
+            <label for="user_input">Você:</label>
+            <input type="text" id="user_input" name="user_input" required>
+            <button type="submit">Enviar</button>
+        </form>
+        {% if user_input and response %}
+            <div class="conversation">
+                <p><strong>Você:</strong> {{ user_input }}</p>
+                <p><strong>{{ chatbot.CHATBOT_NAME }}:</strong> {{ response }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
