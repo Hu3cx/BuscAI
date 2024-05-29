@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for
 from configparser import ConfigParser
-from chatbot import ChatBot
+from buscai.app.chatbot import chatBot
 
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ app = Flask(__name__)
 config = ConfigParser()
 config.read('credentials.ini')
 api_key = config['gemini_ai']['API_KEY']
-chatbot_instance = ChatBot(api_key=api_key)  # Renomear para evitar conflito de nomes
+chatbot_instance = chatBot(api_key=api_key)  # Renomear para evitar conflito de nomes
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
