@@ -8,7 +8,7 @@ app = Flask(__name__)
 config = ConfigParser()
 config.read('credentials.ini')
 api_key = config['gemini_ai']['API_KEY']
-chatbot_instance = chatBot(api_key=api_key)  # Renomear para evitar conflito de nomes
+chatbot_instance = ChatBot(api_key=api_key)  # Renomear para evitar conflito de nomes
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
