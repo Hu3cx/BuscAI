@@ -1,9 +1,10 @@
 from flask import Flask, request, render_template, redirect, url_for
 from configparser import ConfigParser
-
+from chatbot import chatBot
 
 
 app = Flask(__name__)
+
 
 # Carregar a configuração e inicializar o chatbot
 config = ConfigParser()

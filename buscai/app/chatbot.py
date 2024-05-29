@@ -3,7 +3,7 @@ import google.generativeai as genai
 class genAIExeption(Exception):
     """GENAI classe base"""
 
-class ChatBot:
+class chatBot:
     CHATBOT_NAME = 'Buscai'
 
     def __init__(self, api_key):
