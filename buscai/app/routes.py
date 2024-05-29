@@ -5,6 +5,6 @@ from flask import render_template
 def home():
     return render_template('index.html')
 
-@app.route('/index')
+@app.route('templates/index')
 def index():
     return render_template('index.html')
