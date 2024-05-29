@@ -1,4 +1,3 @@
 from flask import Flask
 app=Flask(__name__)
-from buscai.app.app import routes
-from chatbot import chatBot
+from buscai.app import routes
