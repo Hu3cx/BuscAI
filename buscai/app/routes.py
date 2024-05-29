@@ -1,10 +1,12 @@
 from buscai.app.app import app
-from flask import render_template
+# Arquivo: routes.py
+from flask import Flask, render_template
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+app = Flask(__name__)
 
-@app.route('buscai/app/templates/index')
+@app.route('/buscai/app/templates/index')
 def index():
     return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run()
