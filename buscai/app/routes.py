@@ -1,4 +1,4 @@
-from frontend.app.app import app
+from buscai.app.app import app
 from flask import render_template
 
 @app.route('/')
