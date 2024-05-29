@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for
 from configparser import ConfigParser
-import chatBot
+
 
 
 app = Flask(__name__)
