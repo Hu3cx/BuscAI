@@ -5,7 +5,6 @@ from buscai.app.chatbot import chatBot
 
 app = Flask(__name__)
 
-
 # Carregar a configuração e inicializar o chatbot
 config = ConfigParser()
 config.read('credentials.ini')
