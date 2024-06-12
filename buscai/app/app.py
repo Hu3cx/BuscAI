@@ -26,7 +26,7 @@ config.read('credentials.ini')
 api_key = config['gemini_ai']['API_KEY']
 
 def get_chatbot_instance():
-    from chatbot import ChatBot
+    from buscai.app.chatbot import ChatBot
     chatbot_instance = ChatBot(api_key=api_key, db=db)
     print(f"Chatbot instance: {chatbot_instance}")
     return chatbot_instance
