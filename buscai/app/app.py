@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_migrate import Migrate
 from configparser import ConfigParser
-from forms import LoginForm
+from buscai.app.forms import LoginForm
 from datetime import datetime
 
 app = Flask(__name__)
