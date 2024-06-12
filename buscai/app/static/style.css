@@ -12,7 +12,12 @@ body {
 form {
     margin-bottom: 20px;
 }
-
+.Login{
+    margin: 0 auto;
+    text-align: center;
+    color:rgb(230, 201, 166);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
 .conversation {
     margin: 0 auto;
     text-align: left;
@@ -44,4 +49,10 @@ form {
     position: fixed;
     bottom: 0;
     width: 100%;
+}
+
+.logout-form {
+    position: fixed;
+    top: 20px;
+    left: 20px;
 }

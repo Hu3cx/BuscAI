@@ -18,18 +18,20 @@
             </div>
         {% endif %}
     </div>
+
     <div class="fixed-bottom-custom p-3">
         <form method="POST">
-        <div class="input-group mb-3 entrada-de-dados w-50 border border-success-subtle rounded">
-            <input type="text" id="user_input" name="user_input" required class="form-control" placeholder="Input usuario" aria-label="Input usuario" aria-describedby="Input usuario">
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Enviar</button>
-        </div>
+            <div class="input-group mb-3 entrada-de-dados w-50 border border-success-subtle rounded">
+                <input type="text" id="user_input" name="user_input" required class="form-control" placeholder="Input usuario" aria-label="Input usuario" aria-describedby="Input usuario">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Enviar</button>
+            </div>
         </form>
     </div>
 
-
+    <div class="logout-form">
+        <form method="POST" action="{{ url_for('logout') }}" id="logout-form">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Você realmente deseja sair?')">Sair</button>
+        </form>
+    </div>
 </body>
-
 </html>
-
-
