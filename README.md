@@ -7,7 +7,7 @@ Passo a passo para iniciar o ambiente de desenvolvimento da sua máquina.
 
 
 6-Em seguida, após todos os complementos estaremm configurados e intalados, sera necessário abrir o arquivo app.py e alterar a linha 3 para "from chatbot import chatBot" 
-motivo: o ambiente esta configurado para nossa produção/hospedagem *ESTE PASSO É MUITO IMPORTANTE*;
+motivo: o ambiente esta configurado para nossa produção/hospedagem *ESTE PASSO É MUITO IMPORTANTE*;(caso tenha algum arquivo referenciando o caminho completo como por exemplo "from buscai.app.app" sera necessário alterar para somente "from app" para ajustar o caminho correto)
 
 7- execute com a tecla F5 com o arquivo app.py aberto no compilardor
 8 - o terminal deve dar uma mensagem assim: * Serving Flask app 'app'
