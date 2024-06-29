@@ -1,6 +1,7 @@
 import google.generativeai as genai
+import re
 from datetime import datetime
-from buscai.app.app import db
+from app import db
 
 class genAIException(Exception):
     """GENAI classe base"""
@@ -36,7 +37,7 @@ class ChatBot:
     def _construct_message(self, text, role='user'):
         return {
             'role': role,
-            'parts': [text]
+            'parts': text
         }
 
     def _generation_config(self, temperature):
@@ -65,24 +66,53 @@ class ChatBot:
             self.db.session.rollback()
             raise genAIException(f'Erro ao salvar a busca: {str(e)}')
 
+
     def send_prompt(self, prompt, user, temperature=1):
-        if temperature < 0 or temperature > 1:
-            raise genAIException('A temperatura deve estar entre 0 e 1')
-        if not prompt:
-            raise genAIException('O prompt não pode estar vazio')
-        try:
-            response = self.conversation.send_message(
-                content=prompt,
-                generation_config=self._generation_config(temperature),
-            )
-            response.resolve()
-            # Obtendo o ID do usuário passado como parâmetro
-            usuario_id = user.id
-            # Salva a busca no banco de dados
-            self.salvar_busca(termo=prompt, resultado=response.text, usuario_id=usuario_id)
-            return f'{response.text}\n'
-        except Exception as e:
-            raise genAIException(str(e))
+     if temperature < 0 or temperature > 1:
+         raise genAIException('A temperatura deve estar entre 0 e 1')
+     if not prompt:
+         raise genAIException('O prompt não pode estar vazio')
+     try:
+         response = self.conversation.send_message(
+             content=prompt,
+             generation_config=self._generation_config(temperature),
+         )
+         response.resolve()
+         formatted_response = self.format_response(response.text)
+         usuario_id = user.id
+         self.salvar_busca(termo=prompt, resultado=formatted_response, usuario_id=usuario_id)
+         return formatted_response
+     except Exception as e:
+         raise genAIException(str(e))
+     
+    def format_response(self, response_text):
+      # Remover os asteriscos e formatar negrito com tags <strong>
+      response_text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', response_text)
+
+      paragraphs = response_text.split('\n')
+      formatted_response = ''
+      for paragraph in paragraphs:
+          # Identificar e formatar citações
+          if paragraph.startswith('>'):
+              formatted_response += f'<blockquote>{paragraph[1:].strip()}</blockquote>'
+          # Identificar e formatar listas
+          elif paragraph.startswith('*'):
+              formatted_response += f'<ul><li>{paragraph[1:].strip()}</li></ul>'
+          # Identificar e formatar links
+          elif 'http://' in paragraph or 'https://' in paragraph:
+              words = paragraph.split()
+              formatted_paragraph = ' '.join(
+                  f'<a href="{word}" target="_blank">{word}</a>' if word.startswith('http') else word
+                  for word in words
+              )
+              formatted_response += f'<p>{formatted_paragraph}</p>'
+          else:
+              formatted_response += f'<p>{paragraph}</p>'
+
+      # Consolidar listas em uma única <ul>
+      formatted_response = re.sub(r'</ul>\s*<ul>', '', formatted_response)
+
+      return formatted_response
 
     @property
     def history(self):

@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_migrate import Migrate
 from configparser import ConfigParser
-from buscai.app.forms import LoginForm
+from forms import LoginForm, RegistrationForm
 from datetime import datetime
 
 app = Flask(__name__)
@@ -49,7 +49,9 @@ def index():
     if request.method == 'POST':
         user_input = request.form['user_input']
         if user_input.lower() == 'sair':
-            return redirect(url_for('goodbye'))
+                logout_user()
+                return redirect(url_for('login'))
+
         try:
             response = chatbot_instance.send_prompt(user_input, current_user)
 
@@ -57,6 +59,20 @@ def index():
             response = f"Error: {e}"
         return render_template('index.html', user_input=user_input, response=response, chatbot=chatbot_instance)
     return render_template('index.html', chatbot=chatbot_instance)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_password = form.password.data  #função para hashear a senha
+        new_user = User(username=form.username.data, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Conta criada com sucesso! Você agora pode fazer login.', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -80,5 +96,7 @@ def logout():
     return redirect(url_for('login'))
 
 
+
 if __name__ == '__main__':
     app.run(debug=True)
+
