@@ -1,7 +1,7 @@
 import google.generativeai as genai
 import re
 from datetime import datetime
-from app import db
+from buscai.app.app import db
 
 class genAIException(Exception):
     """GENAI classe base"""
