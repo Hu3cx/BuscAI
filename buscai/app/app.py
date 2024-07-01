@@ -3,8 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from flask_migrate import Migrate
 from configparser import ConfigParser
+from fpdf import FPDF
+from flask import send_file
 from buscai.app.forms import LoginForm, RegistrationForm
 from datetime import datetime
+import tempfile
+import io
+import html2text
+
 
 app = Flask(__name__)
 
@@ -87,7 +93,37 @@ def login():
         else:
             flash('Login Incorreto. Por favor verifique o usuário e senha informados', 'danger')
     return render_template('login.html', form=form)
- 
+
+@app.route('/download_response', methods=['POST'])
+def download_response():
+    response_text = request.form['response_text']
+
+    # Configurar o PDF
+    pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15)  # Configura a quebra automática de página
+    pdf.add_page()
+    pdf.set_font('Arial', size=12)
+
+    # Converter HTML para texto simples
+    plain_text = html2text.html2text(response_text)
+
+    # Adicionar o texto ao PDF com suporte a UTF-8
+    pdf.multi_cell(0, 10, plain_text)
+
+    # Criar um arquivo temporário para salvar o PDF
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        pdf.output(name=tmp_file.name, dest='F')
+        tmp_file.flush()
+        tmp_file.seek(0)
+
+        # Enviar o arquivo PDF como um download
+        return send_file(
+            tmp_file.name,
+            as_attachment=True,
+            download_name='response.pdf',
+            mimetype='application/pdf'
+        )
+
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
